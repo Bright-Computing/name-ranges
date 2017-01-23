@@ -20,7 +20,7 @@ thisdir = os.path.dirname(__file__)
 sys.path.insert(1, os.path.join(thisdir, ".."))
 
 import nameranges.parser as range_parser # noqa
-from nameranges.parser import HostnamesParseError # noqa
+from nameranges.parser import RangeParseError # noqa
 
 
 class TestHostnameParsing(unittest.TestCase):
@@ -54,5 +54,5 @@ class TestHostnameParsing(unittest.TestCase):
     def test_malformed_grouping_generates_exception(self):
         description = "node001,node00a..node011"
 
-        with self.assertRaises(HostnamesParseError):
+        with self.assertRaises(RangeParseError):
             range_parser.parse(description)

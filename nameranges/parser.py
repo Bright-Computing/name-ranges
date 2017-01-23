@@ -15,7 +15,7 @@
 import re
 
 
-class HostnamesParseError(Exception):
+class RangeParseError(Exception):
     pass
 
 
@@ -49,7 +49,7 @@ def parse(grouped_hostnames):
                         start_int = int(start)
                         end_int = int(end)
                     except ValueError:
-                        raise HostnamesParseError("Incorrect range format")
+                        raise RangeParseError("Incorrect range format")
                     temp_hostnames = ""
 
                     for r in range(start_int, end_int + 1):
@@ -85,5 +85,5 @@ def parse(grouped_hostnames):
                     if length1 == length2:
                         hostnames.append(base)
     except Exception, ex:
-        raise HostnamesParseError(str(ex))
+        raise RangeParseError(str(ex))
     return hostnames
