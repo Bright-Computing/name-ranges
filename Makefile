@@ -26,6 +26,3 @@ static-check-report: syntax-static-check
 
 test:
 	py.test --cov=nameranges tests
-
-
-
