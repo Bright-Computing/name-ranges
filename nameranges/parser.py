@@ -83,6 +83,6 @@ def parse(grouped_names):
                 if not diff:
                     if length1 == length2:
                         names.append(base)
-    except Exception, ex:
+    except Exception as ex:
         raise RangeParseError(str(ex))
     return names
