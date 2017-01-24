@@ -19,16 +19,16 @@ class RangeParseError(Exception):
     pass
 
 
-def parse(grouped_hostnames):
-    """Parse group of grouped hostnames into an array of extended hostnames
+def parse(grouped_names):
+    """Parse group of grouped names into an array of extended names
 
-    :param grouped_hostnames Represent the hostnames grouped
-    :type grouped_hostnames: string
-    :return array of extended hostnames
+    :param grouped_names Represent the names grouped
+    :type grouped_names: string
+    :return array of extended names
     """
-    hostnames = []
+    names = []
     try:
-        parts = re.split(r'\)?[, ]\(?', grouped_hostnames)
+        parts = re.split(r'\)?[, ]\(?', grouped_names)
         for part in parts:
             sbr1 = part.find('[')
             if sbr1 != -1:
@@ -54,15 +54,14 @@ def parse(grouped_hostnames):
 
                     for r in range(start_int, end_int + 1):
                         zeros = '0' * (start_len - len(str(r)))
-                        temp_hostnames += header + zeros + str(
-                            r) + footer + ','
-                    hostnames.extend(parse(temp_hostnames))
+                        temp_hostnames += header + zeros + str(r) + footer + ','
+                    names.extend(parse(temp_hostnames))
             else:
                 # Convert "node001..node011" to "node0[01..11]" and parse again
                 dots = part.find('..')
                 if dots == -1:
                     if len(part):
-                        hostnames.append(part)
+                        names.append(part)
                     continue
                 s1 = part[:dots]
                 s2 = part[dots + 2:]
@@ -78,12 +77,12 @@ def parse(grouped_hostnames):
                     else:
                         diff = True
                         std_form = "%s[%s..%s]" % (base, s1[i:], s2[i:])
-                        hostnames.extend(parse(std_form))
+                        names.extend(parse(std_form))
                         break
                 # Something is wrong => try to handle as better as possible
                 if not diff:
                     if length1 == length2:
-                        hostnames.append(base)
+                        names.append(base)
     except Exception, ex:
         raise RangeParseError(str(ex))
-    return hostnames
+    return names

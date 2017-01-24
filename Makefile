@@ -24,4 +24,7 @@ syntax-static-check:
 static-check-report: syntax-static-check
 	$(MAKE) -C $(REPORT_DIR) all
 
+test:
+	py.test --cov=nameranges
+
 
