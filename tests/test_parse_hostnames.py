@@ -30,7 +30,9 @@ class TestHostnameParsing(unittest.TestCase):
         nodes = range_parser.parse(description)
 
         self.assertEquals(1, len(nodes))
-        self.assertIn("node001", nodes)
+
+        node001_in_nodes = "node001" in nodes
+        self.assertTrue(node001_in_nodes)
 
     def test_advanced_grouping(self):
         description = "node001,node009..node011"
@@ -38,10 +40,16 @@ class TestHostnameParsing(unittest.TestCase):
         nodes = range_parser.parse(description)
 
         self.assertEquals(4, len(nodes))
-        self.assertIn("node001", nodes)
-        self.assertIn("node009", nodes)
-        self.assertIn("node010", nodes)
-        self.assertIn("node011", nodes)
+
+        node001_in_nodes = "node001" in nodes
+        node009_in_nodes = "node009" in nodes
+        node010_in_nodes = "node010" in nodes
+        node011_in_nodes = "node011" in nodes
+
+        self.assertTrue(node001_in_nodes)
+        self.assertTrue(node009_in_nodes)
+        self.assertTrue(node010_in_nodes)
+        self.assertTrue(node011_in_nodes)
 
     def test_grouping_on_mic_node_names(self):
         description = "node001-mic[0..1]"
@@ -54,5 +62,10 @@ class TestHostnameParsing(unittest.TestCase):
     def test_malformed_grouping_generates_exception(self):
         description = "node001,node00a..node011"
 
-        with self.assertRaises(RangeParseError):
+        try:
             range_parser.parse(description)
+            self.assertTrue(False)
+        except RangeParseError:
+            self.assertTrue(True)
+        except:
+            self.assertTrue(False)
